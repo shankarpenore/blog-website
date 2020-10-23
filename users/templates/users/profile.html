@@ -1,0 +1,13 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+<b>Hi {{ request.user.username }} </b>
+<div class="card">
+    <h4>
+        Basic Details :
+    </h4>
+    First First: {{ request.user.first_name}}
+    Last Name : {{ request.user.last_name}}
+    Email : {{ request.user.email}}
+</div>
+{% endblock%}

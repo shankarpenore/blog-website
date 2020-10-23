@@ -1,0 +1,54 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+    <ol>
+        {% if post %}
+        <article>
+            <h4> {{ post.title | title }} </h4> <i class="text-muted">{{post.author | title }}, {{ post.date_posted}}</i>
+            <button> Total Likes: {{ likes_count }}</button>
+            {% if user.is_authenticated %}
+                {% if is_liked %}
+                <form action="{% url 'blog:dislike_post' post.id %}"  method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-danger " type="submit" value="{{ post.id }}" name="dislike_field">Dislike</button>
+                </form>
+                {% else %}
+                <form action="{% url 'blog:like_post' post.id %}"  method="post">
+                    {% csrf_token %}
+                     <button class="btn btn-success"type="submit" value="{{ post.id }}" name="like_field">Like</button>
+                </form>
+                {% endif %}
+            {% endif %}
+
+            <hr />
+            <button class="btn btn-danger"><a href="{% url 'blog:delete_post' post.id %}"> Delete </a> </button>
+            <button class ='btn btn-dark'> <a href="{% url 'blog:edit_post' post.id %}"> Edit </a> </button>
+            <div class="p-3">
+                {{ post.content}}
+            </div>
+            <hr />
+            <button class="btn btn-primary">
+                Comments
+            </button>
+            <button class="btn btn-primary-outline">
+                <a href="{% url 'blog:add_comment' post.id %}">
+                    Add Comment
+                </a>
+            </button>
+            {% if comments %}
+            {% for comment in comments %}
+            <div class="pt-2">
+                    <b><i>{{ comment.commenter | title }}</i></b>
+                <small>{{ comment.date_commented | date:'M, j Y'}}</small>
+            </div>
+            <div class="text-muted p-1">
+                {{ comment.comment}}
+            </div>
+            <button class="btn btn-danger"><a href="{% url 'blog:delete_comment' post.id comment.id %}">D</a></button>
+            <button class="btn btn-dark"><a href="{% url 'blog:edit_comment' post.id comment.id %}">E</a></button>
+            {% endfor %}
+            {% endif %}
+        </article>
+        {% endif %}
+    </ol>
+{% endblock%}

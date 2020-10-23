@@ -1,0 +1,30 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+    <h3>Recent Posts</h3><button class="btn btn-primary"><a class="text-dark" href="{% url 'blog:create_post' %}">Create Post</a></button>
+    <ol class="p-1">
+        {% for post in page_obj %}
+        <article>
+
+            <h4> <a href="{{ post.get_absolute_url }}" >{{ post.title | title }}</a> </h4> <i class="text-muted">{{post.author | title }}, {{ post.date_posted}}</i>
+            <div>
+                {{ post.content}}
+            </div>
+        </article>
+        <hr />
+        {% endfor %}
+
+    </ol>
+    <div class="float-right">
+       <div class="btn-group">
+        {% if page_obj.has_previous %}
+        <button class="btn btn-outline-primary"><a class="text-dark" href="?page={{page_obj.previous_page_number}}">Previous</a></button>
+        {%endif %}
+        <button class="btn btn-outline-primary">{{ page_obj.number}}</button>
+        {% if page_obj.has_next %}
+        <button class="btn btn-outline-primary"><a class="text-dark" href="?page={{page_obj.next_page_number}}">Next</a></button>
+        {%endif %}
+    </div>
+    </div>
+
+{% endblock%}
